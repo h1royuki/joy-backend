@@ -6,13 +6,42 @@ const axios = require('axios');
 router.get('/page/:pageId', async function(req, res, next) {
   const page = req.params.pageId ? req.params.pageId : null;
 
-  console.log(page);
-  const test = await parser.getPage(page);
-  res.json(test);
+  const json = await parser.getHomePage(page);
+
+  res.json(json);
   res.end();
 });
 
-router.get('/user/avatar/:userId', async function(req, res, next) {
+router.get('/tag/:tagId/:pageId', async function(req, res, next) {
+  const page = req.params.pageId ? req.params.pageId : null;
+  const tag = req.params.tagId ? req.params.tagId : null;
+
+  if(!tag) {
+    res.end();
+  }
+
+  const json = await parser.getTagPage(page, tag);
+
+  res.json(json);
+  res.end();
+});
+
+router.get('/user/:userId/:pageId', async function(req, res, next) {
+  const page = req.params.pageId ? req.params.pageId : null;
+  const user = req.params.userId ? req.params.userId : null;
+
+  if(!user) {
+    res.end();
+  }
+
+
+  const json = await parser.getUserPage(page, user);
+
+  res.json(json);
+  res.end();
+});
+
+router.get('/avatar/:userId', async function(req, res, next) {
   const userId = Number(req.params.userId) ? req.params.userId : null;
 
   const response = await axios.get('http://img0.joyreactor.cc/pics/avatar/user/' + userId, {
